@@ -1,13 +1,10 @@
 package com.marzipanka.library.books;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "api/v1/book")
@@ -25,8 +22,25 @@ public class BookController {
         return bookService.getBooks();
     }
 
+    @GetMapping(path = "{bookId}")
+    public Optional<Book> getBook(@PathVariable("bookId") Integer bookId) {
+        return bookService.getBook(bookId);
+    }
+
     @PostMapping
     public void addNewBook(@RequestBody Book book) {
         bookService.addNewBook(book);
+    }
+
+    @DeleteMapping(path = "{bookId}")
+    public void deleteBook(@PathVariable("bookId") Integer bookId) {
+        bookService.deleteBook(bookId);
+    }
+
+    @PutMapping(path = "{bookId}")
+    public void updateBook(@PathVariable("bookId") Integer bookId,
+                           @RequestParam(required = false) String name,
+                           @RequestParam(required = false) Integer year) {
+        bookService.updateBook(bookId, name, year);
     }
 }
